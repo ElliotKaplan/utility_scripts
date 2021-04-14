@@ -1,7 +1,7 @@
 #!/usr/bin/awk -f 
 
 BEGIN {
-    if (ARGC == 0) {
+    if (ARGC == 1) {
         print("Read a single stanza from a configuration file, defaults to .sshc/onfig");    
         exit;
         }

@@ -1,11 +1,13 @@
 #!/usr/bin/awk -f
 
 BEGIN {
-    if (ARGC == 0) {
+    if (ARGC == 1) {
         print("csv_col.awk [-v sep=\",\"] [-v row=1] [-v reg=<regex>] targetfile");
-        print("Reads the specified row of a file (default first) and print an itemized list of column names");
-        print("Default separator is \",\"");
-        print("Set \"reg\" to use regular expression to find column header line")
+        print("\011Reads the specified row of a file (default first) and print an itemized list of column names");
+        print("\011Default separator is \",\"");
+        print("\011Set \"row\" to use a specified row as the column header line");  
+        print("\011Set \"reg\" to use regular expression to find column header line")
+        exit;
     };
     # default to commas
     if (sep=="") sep = ",";
