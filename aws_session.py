@@ -34,9 +34,9 @@ if __name__=='__main__':
     # variables to use the awscli and/or terraform
     for k, v in creds.items():
         print(
-            'export aws_{}={}'.format(
+            'export AWS_{}={}'.format(
                 '_'.join(
-                    m.group(0).lower() for m in camelreg.finditer(k)
+                    m.group(0).upper() for m in camelreg.finditer(k)
                 ),
                 v)
         )
