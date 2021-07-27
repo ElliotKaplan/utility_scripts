@@ -12,6 +12,8 @@ BEGIN {
 }
 ($2 == "open"){
     split($1, port, "/");
+    # drop any port under 1000, excepting 80 and 443 as unlikely to be
+    # http services
     if ((port[1] < 1000) && (port[1] != 80) && (port[1] != 443)) next;
       if ($3 ~ "ssl") {
         pref = "https://"
