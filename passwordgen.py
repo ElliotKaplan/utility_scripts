@@ -15,12 +15,17 @@ argparser.add_argument('-d', '--digits', action='store_true',
                        help='only output digits')
 argparser.add_argument('--no_special', action='store_true',
                        help='set to not include special characters')
+argparser.add_argument('--xkcd', action='store_true',
+                       help='set to use /usr/share/dict/american-english to seed a password')
 
 clargs = argparser.parse_args()
 if clargs.digits:
-    clargs.range = (0x30, 0x39)
-if clargs.no_special:
+    chrs = digits
+elif clargs.no_special:
     chrs = ascii_lowercase + ascii_uppercase + digits
+elif clargs.xkcd:
+    with open('/usr/share/dict/american-english') as fi:
+        chrs = list(set(map(lambda s: s.strip('\n').strip("'s").capitalize(), fi)))
 else:
     chrs = list(map(chr, range(*map(int, clargs.range))))
 
