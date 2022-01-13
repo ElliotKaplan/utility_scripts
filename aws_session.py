@@ -17,6 +17,8 @@ if __name__=='__main__':
                         help='name of token to authenticate against')
     parser.add_argument('token_code', type=str,
                         help='value of time based OTP for token')
+    parser.add_argument('-r', '--region', default='us-east-1', type=str,
+                        help='aws region to act in')
 
     clargs = parser.parse_args()
 
@@ -29,16 +31,19 @@ if __name__=='__main__':
     creds = data['Credentials']
     # remove the expiration as unnecessary
     exp = creds.pop('Expiration')
+    # add the region
+    creds['DefaultRegion'] = clargs.region
 
     # print the shell commands to set the proper environmental
     # variables to use the awscli and/or terraform
-    for k, v in creds.items():
-        print(
-            'export AWS_{}={}'.format(
-                '_'.join(
-                    m.group(0).upper() for m in camelreg.finditer(k)
-                ),
-                v)
-        )
+    print('\n'.join(
+        'export AWS_{}={}'.format(
+            '_'.join(
+                m.group(0).upper() for m in camelreg.finditer(k)
+            ), v)
+        for k, v in creds.items()
+    )
+          )
+
     
     
