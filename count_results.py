@@ -5,20 +5,26 @@ import sys
 import math
 from argparse import ArgumentParser
 
+argparser = ArgumentParser('count unique results from stdin')
+argparser.add_argument('-u', '--unique', action='store_true',
+                       help='set to only print unique values')
+argparser.add_argument('-d', '--descending', action='store_true',
+                       help='set to sort output by count descending')
+argparser.add_argument('-a', '--alphasort', action='store_true',
+                       help='set to sort output alphabetially')
+argparser.add_argument('-t', '--total', action='store_true',
+                       help='set to output a total count alongside individual values')
+argparser.add_argument('-s', '--stream', action='store_true',
+                       help="set to stream live results as they come in. Specific to unique")
+argparser.add_argument('--to_upper', action='store_true',
+                       help='set to convert values to upper case before counting')
+argparser.add_argument('--to_lower', action='store_true',
+                       help='set to convert values to lower case before counting')
+argparser.add_argument('-m', '--minimum', type=int, default=-1,
+                       help='set to have a minimum number of entries before being printed')
+
+
 if __name__=='__main__':
-    argparser = ArgumentParser('count unique results from stdin')
-    argparser.add_argument('-u', '--unique', action='store_true',
-                           help='set to only print unique values')
-    argparser.add_argument('-d', '--descending', action='store_true',
-                           help='set to sort output by count descending')
-    argparser.add_argument('-a', '--alphasort', action='store_true',
-                           help='set to sort output alphabetially')
-    argparser.add_argument('-t', '--total', action='store_true',
-                           help='set to output a total count alongside individual values')
-    argparser.add_argument('--to_upper', action='store_true',
-                           help='set to convert values to upper case before counting')
-    argparser.add_argument('--to_lower', action='store_true',
-                           help='set to convert values to lower case before counting')
 
     clargs = argparser.parse_args()
     stream = sys.stdin
@@ -41,7 +47,8 @@ if __name__=='__main__':
 
     fmtstr = '{:>' + str(maxdig) + 'd}' + 5*' ' + '{}'
     for k, v in sorted(cnt.items(), key=lambda t: t[sortind], reverse=clargs.descending):
-        print(fmtstr.format(v, k.strip()))
+        if v >= clargs.minimum:
+            print(fmtstr.format(v, k.strip()))
     if clargs.total:
         print('='*(maxdig + 4 + max(map(len, cnt.keys()))))
         print(fmtstr.format(sum(cnt.values()), ''))
