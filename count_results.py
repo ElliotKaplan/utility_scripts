@@ -8,6 +8,8 @@ from argparse import ArgumentParser
 argparser = ArgumentParser('count unique results from stdin')
 argparser.add_argument('-u', '--unique', action='store_true',
                        help='set to only print unique values')
+argparser.add_argument('-n', '--nosort', action='store_true',
+                       help='set to retain the order of the unique entries')
 argparser.add_argument('-d', '--descending', action='store_true',
                        help='set to sort output by count descending')
 argparser.add_argument('-a', '--alphasort', action='store_true',
@@ -37,6 +39,15 @@ if __name__=='__main__':
         vals = set(stream)
         for val in sorted(vals, reverse=clargs.descending):
             print(val.strip())
+        sys.exit()
+
+    if clargs.nosort:
+        first = dict()
+        for i, val in enumerate(stream):
+            first[val] = first.get(val, i)
+        ordval = {v: k for k, v in first.items()}
+        for i in sorted(ordval.keys()):
+            print(ordval[i].strip())
         sys.exit()
 
     cnt = Counter(stream)
