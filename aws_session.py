@@ -19,6 +19,8 @@ if __name__=='__main__':
                         help='value of time based OTP for token')
     parser.add_argument('-r', '--region', default='us-east-1', type=str,
                         help='aws region to act in')
+    parser.add_argument('-d', '--docker', action='store_true',
+                        help='set to output for inclusion in a docker environment')
 
     clargs = parser.parse_args()
 
@@ -36,14 +38,19 @@ if __name__=='__main__':
 
     # print the shell commands to set the proper environmental
     # variables to use the awscli and/or terraform
-    print('\n'.join(
-        'export AWS_{}={}'.format(
+    envvars = (
+        'AWS_{}={}'.format (
             '_'.join(
                 m.group(0).upper() for m in camelreg.finditer(k)
             ), v)
         for k, v in creds.items()
     )
-          )
+    
+    if clargs.docker:
+        print(' '.join('-e {}'.format(e) for e in envvars))
+    else:
+        print('\n'.join('export {}'.format(e) for e in envvars))
+
 
     
     
