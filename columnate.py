@@ -19,8 +19,8 @@ if __name__=='__main__':
                            help='number of columns')
     argparser.add_argument('-s', '--separator', type=str, default='\t',
                            help='column separator')
-    argparser.add_argument('input', nargs='?', type=FileType('r'),
-                           help='inputdata, set to "-" for stdin')
+    argparser.add_argument('input', nargs='?', default='-', type=FileType('r'),
+                           help='inputdata, default is stdin')
 
     clargs = argparser.parse_args()
     columnate(clargs.num_col, *clargs.input, sep=clargs.separator)
