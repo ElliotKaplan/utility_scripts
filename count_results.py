@@ -24,6 +24,8 @@ argparser.add_argument('--to_lower', action='store_true',
                        help='set to convert values to lower case before counting')
 argparser.add_argument('-m', '--minimum', type=int, default=-1,
                        help='set to have a minimum number of entries before being printed')
+argparser.add_argument('--header', action='store_true',
+                       help='set to print column headers')
 
 
 if __name__=='__main__':
@@ -57,6 +59,9 @@ if __name__=='__main__':
         / math.log(10)) + 1
 
     fmtstr = '{:>' + str(maxdig) + 'd}' + 5*' ' + '{}'
+    if clargs.header:
+        print(('{:>' + str(maxdig) + 's}     {}').format('Count', 'Value'))
+        
     for k, v in sorted(cnt.items(), key=lambda t: t[sortind], reverse=clargs.descending):
         if v >= clargs.minimum:
             print(fmtstr.format(v, k.strip()))
