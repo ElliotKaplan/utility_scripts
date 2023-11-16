@@ -17,7 +17,9 @@ argparser.add_argument('-a', '--alphasort', action='store_true',
 argparser.add_argument('-t', '--total', action='store_true',
                        help='set to output a total count alongside individual values')
 argparser.add_argument('-s', '--stream', action='store_true',
-                       help="set to stream live results as they come in. Specific to unique")
+                       help='set to stream live results as they come in. Specific to unique')
+argparser.add_argument('--sep', default='\n',
+                       help='set to change separator between values. Specific to unique')
 argparser.add_argument('--to_upper', action='store_true',
                        help='set to convert values to upper case before counting')
 argparser.add_argument('--to_lower', action='store_true',
@@ -39,8 +41,14 @@ if __name__=='__main__':
 
     if clargs.unique:
         vals = set(stream)
-        for val in sorted(vals, reverse=clargs.descending):
-            print(val.strip())
+        print(
+            clargs.sep.join(
+                sorted(
+                    (v.strip() for v in vals),
+                    reverse=clargs.descending
+                )
+            )
+        )
         sys.exit()
 
     if clargs.nosort:
