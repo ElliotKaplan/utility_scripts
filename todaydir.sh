@@ -8,5 +8,40 @@ if [ $# -eq 0 ]; then
     exit;
 fi
 
+targetdir="$(date '+%Y_%m_%d')_$1"
+mkdir $targetdir
+cd $targetdir
 
-mkdir "$(date '+%Y_%m_%d')_$1"
+# set up directories
+mkdir client_data
+mkdir scan_output
+mkdir scripts
+mkdir sqlmap
+# need some python fluff
+touch scripts/__init__.py
+touch sqlmap/__init__.py
+
+# basic todo list
+cat <<EOF > notes.org
+#+title:  $1
+#+author: $(whoami)
+#+date:   $(date '+%Y-%m-%d')
+
+* TODO Setup
+** TODO review client docs
+** TODO set up burp configuration
+
+* TODO Unauthenticated Scans
+** TODO Port Scan
+** TODO DNS enumeration
+** TODO TLS Cipher Suite
+** TODO dirsearch scan
+
+* TODO Authenticated Scans
+** TODO script logon
+** TODO Remove logoff from scope
+** TODO authenticated dirsearch
+** TODO Burp active scan
+
+ 
+EOF
