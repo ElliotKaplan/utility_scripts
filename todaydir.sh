@@ -15,11 +15,15 @@ cd $targetdir
 # set up directories
 mkdir client_data
 mkdir scan_output
+mkdir screenshots
 mkdir scripts
 mkdir sqlmap
 # need some python fluff
 touch scripts/__init__.py
 touch sqlmap/__init__.py
+# set up a place to log all the command line stuff
+# set to append only so that you don't accidentally overwrite it
+touch commandlog && sudo chattr +a commandlog
 
 # basic todo list
 cat <<EOF > notes.org
