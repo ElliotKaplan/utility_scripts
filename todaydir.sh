@@ -34,18 +34,25 @@ cat <<EOF > notes.org
 * TODO Setup
 ** TODO review client docs
 ** TODO set up burp configuration
-
 * TODO Unauthenticated Scans
 ** TODO Port Scan
 ** TODO DNS enumeration
 ** TODO TLS Cipher Suite
 ** TODO dirsearch scan
-
+* TODO Determine Tech Stack
+** TODO Front-end Client
+*** TODO Extract frontend javascript
+** TODO Back-end Server
+** TODO Reverse Proxy
+** TODO WAF
 * TODO Authenticated Scans
 ** TODO script logon
 ** TODO Remove logoff from scope
 ** TODO authenticated dirsearch
 ** TODO Burp active scan
-
- 
+* TODO Cache configuration
+** TODO Delimiter character
+** TODO Cache path/decode
+* TODO End of engagement
+** TODO archive working directory and upload to storage 
 EOF

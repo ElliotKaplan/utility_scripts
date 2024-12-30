@@ -14,12 +14,19 @@ if [ ! -d "$targ" ]; then
     exit;
 fi
     
-echo "original";
+echo "$targ original";
 du -h $targ --max-depth 0;
 
-dest=$targ\_$(whoami)\_working_directory.tar;
+dest="${targ%/}_$(whoami)_working_directory_$(date '+%Y_%m_%d').tar";
 
-tar -cf $dest $targ && gzip $dest;
+tar -cf $dest \
+    --exclude='client_data/*' \
+    --exclude='*.pyc' \
+    --exclude='*~' \
+    --exclude='*.burp.backup' \
+    --exclude='\#*\#' \
+    $targ \
+    && gzip $dest;
 
 echo "";
 echo "compressed size";
