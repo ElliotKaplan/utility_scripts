@@ -1,8 +1,14 @@
 #!/usr/bin/python3
 from netaddr import ip
+import re
 
 def ipsort(stream, reverse=False):
-    return sorted(map(lambda s: s.strip(), stream), key=ip.IPAddress, reverse=reverse)
+    ip4reg = re.compile('\\d{1,3}(\\.\\d{1,3}){3}')
+    return sorted(
+        map(lambda s: s.strip(), stream),
+        key=lambda s: ip.IPAddress(ip4reg.search(s).group(0)),
+        reverse=reverse
+    )
 
 if __name__ == '__main__':
     # import fileinput
