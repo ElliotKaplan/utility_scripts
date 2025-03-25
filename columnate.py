@@ -2,14 +2,16 @@
 
 import math
 
-def columnate(ncol, *args, sep='\t'):
+def columnate(ncol, *args, sep='\t', column=None):
     nrow = math.ceil(len(args) / ncol)
     cols = [list(s.strip() for s in args[i*nrow:(i+1)*nrow])
             for i in range(ncol)]
     for col in cols[1:]:
         while(len(col) != len(cols[0])):
             col.append('')
-    print('\n'.join(sep.join(r) for r in zip(*cols)))
+    if column is None:
+        return '\n'.join(sep.join(r) for r in zip(*cols))
+    return '\n'.join(cols[column])
     
 
 if __name__=='__main__':
@@ -19,9 +21,11 @@ if __name__=='__main__':
                            help='number of columns')
     argparser.add_argument('-s', '--separator', type=str, default='\t',
                            help='column separator')
+    argparser.add_argument('-c', '--column', type=int, default=None,
+                           help='which column to print, default all')
     argparser.add_argument('input', nargs='?', default='-', type=FileType('r'),
                            help='inputdata, default is stdin')
 
     clargs = argparser.parse_args()
-    columnate(clargs.num_col, *clargs.input, sep=clargs.separator)
+    print(columnate(clargs.num_col, *clargs.input, sep=clargs.separator, column=clargs.column))
 
