@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import __name__ == '__main__':
+if __name__ == '__main__':
     from argparse import ArgumentParser, FileType
     import sys
     argparser = ArgumentParser('convert a stream or file into a PERL style regex')
@@ -9,4 +9,4 @@ import __name__ == '__main__':
                            default=sys.stdin)
 
     clargs = argparser.parse_args()
-    print('|'.join(clargs.infile).join('()'))
+    print('|'.join(map(lambda s: s.strip(), clargs.infile)).join('()'))
