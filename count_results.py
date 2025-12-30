@@ -3,9 +3,11 @@
 from collections import Counter
 import sys
 import math
-from argparse import ArgumentParser
+from argparse import ArgumentParser, FileType
 
 argparser = ArgumentParser('count unique results from stdin')
+argparser.add_argument('stream', type=FileType('r'), nargs='?', default=sys.stdin,
+                       help='file to count, defaults to stdin')
 argparser.add_argument('-u', '--unique', action='store_true',
                        help='set to only print unique values')
 argparser.add_argument('-n', '--nosort', action='store_true',
@@ -33,7 +35,7 @@ argparser.add_argument('--header', action='store_true',
 if __name__=='__main__':
 
     clargs = argparser.parse_args()
-    stream = sys.stdin
+    stream = clargs.stream
     if clargs.to_upper:
         stream = map(lambda s: s.upper(), stream)
     if clargs.to_lower:
