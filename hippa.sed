@@ -1,0 +1,33 @@
+#!/usr/bin/sed -f
+
+# intended to highlight nmap script ssl-enum-ciphers for hippa compliance
+
+# check protocols
+s/\b\(TLSv1\.[01]\|SSLv[0-9]\.[0-9]\)\b/[1m[91m\1[0m/ # TLS < 1.2 fail
+s/\b\(TLSv1\.[23]\)\b/[1m[92m\1[0m/ # TLS >= 1.2 pass
+
+# pass ciphers enumerated in https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-52r2.pdf
+s/\b\(TLS_DHE_RSA_WITH_AES_128_CBC_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_DHE_RSA_WITH_AES_128_CCM\)\b/[1m[92m\1[0m/
+s/\b\(TLS_DHE_RSA_WITH_AES_128_CCM_8\)\b/[1m[92m\1[0m/
+s/\b\(TLS_DHE_RSA_WITH_AES_128_GCM_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_DHE_RSA_WITH_AES_256_CBC_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_DHE_RSA_WITH_AES_256_CCM\)\b/[1m[92m\1[0m/
+s/\b\(TLS_DHE_RSA_WITH_AES_256_CCM_8\)\b/[1m[92m\1[0m/
+s/\b\(TLS_DHE_RSA_WITH_AES_256_GCM_SHA384\)\b/[1m[92m\1[0m/
+s/\b\(TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA21\)\b/[1m[92m\1[0m/
+s/\b\(TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA\)\b/[1m[92m\1[0m/
+s/\b\(TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384\)\b/[1m[92m\1[0m/
+s/\b\(TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384\)\b/[1m[92m\1[0m/
+
+# nmap inclues AKE_WITH_ in tlsv1.3 ciphers for some reason 
+s/\b\(TLS_\(AKE_WITH_\)\?AES_128_CCM_8_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_\(AKE_WITH_\)\?AES_128_CCM_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_\(AKE_WITH_\)\?AES_128_GCM_SHA256\)\b/[1m[92m\1[0m/
+s/\b\(TLS_\(AKE_WITH_\)\?AES_256_GCM_SHA384\)\b/[1m[92m\1[0m/
+
+# Fail all other ciphers. The color codes from passing ciphers move
+# the word boundary so that the following regex will not catch them
+s/\b\(TLS\(_[A-Z0-9]\+\)\+\)\b/[1m[91m\1[0m/ 
