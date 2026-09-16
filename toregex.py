@@ -9,4 +9,4 @@ if __name__ == '__main__':
                            default=sys.stdin)
 
     clargs = argparser.parse_args()
-    print('|'.join(map(lambda s: s.strip(), clargs.infile)).join('()', end=''))
+    print('|'.join(map(lambda s: s.strip(), clargs.infile)).join('()'), end='')
