@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 
 from subprocess import Popen, PIPE
-from argparse import ArgumentParser
+from argparse import ArgumentParser, FileType
 from os import path
-
+import sys
 def dnscheck(domain, fobj, dnsserver='127.0.0.53', nsubdomains=50):
-    eof = path.getsize(fobj.name)
     subdoms = 'start'
     while True:
         subdoms = [
@@ -29,8 +28,8 @@ def dnscheck(domain, fobj, dnsserver='127.0.0.53', nsubdomains=50):
 argparser = ArgumentParser('find valid subdomains')
 argparser.add_argument('domain', type=str,
                        help='domain to enumerate')
-argparser.add_argument('subdomainlist', type=str,
-                       help='filename containing subdomains')
+argparser.add_argument('subdomainlist', type=FileType('r'), nargs='?', default='-',
+                       help='filetype containing subdomains')
 argparser.add_argument('-d', '--dnsserver', type=str, default='127.0.0.53',
                        help='server to query')
 argparser.add_argument('-c', '--chunksize', type=int, default=50,
@@ -38,9 +37,10 @@ argparser.add_argument('-c', '--chunksize', type=int, default=50,
 
 if __name__=='__main__':
     clargs = argparser.parse_args()
-    with open(clargs.subdomainlist) as fi:
-        for i, out in enumerate(dnscheck(clargs.domain, fi,
-                            dnsserver=clargs.dnsserver,
-                            nsubdomains=clargs.chunksize)):
-            print(out, end='')
+    for i, out in enumerate(
+            dnscheck(
+                clargs.domain, clargs.subdomainlist,
+                dnsserver=clargs.dnsserver,
+                nsubdomains=clargs.chunksize)):
+        print(out, end='')
 

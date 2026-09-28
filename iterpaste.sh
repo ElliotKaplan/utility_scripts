@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 if [ $# -eq 0 ]; then
     echo 'iterpaste.sh <format_str> <values>';
     echo '=======';
